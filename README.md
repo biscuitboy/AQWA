@@ -1,5 +1,4 @@
 # Welcome to AQWA!
--------------------
 
 Hey there! Welcome to the **Air Quality and Weather Application (AQWA)**.
 
