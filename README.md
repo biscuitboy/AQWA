@@ -1,5 +1,5 @@
 # Welcome to AQWA!
-===================
+-------------------
 
 Hey there! Welcome to the **Air Quality and Weather Application (AQWA)**.
 
@@ -14,7 +14,7 @@ No installation. No set up!
 
 Simply extract the **AQWA.zip** file and launch the `index.html` file under *master* directory in your favorite browser. That's it!
 
-### **Important Note:** 
+### Important Note:
 
 You have to subscribe to the APIs used in the Application and get your own API keys. Once you get the API keys, simply update them in the `settings.js` file under *js/dist/climate-app/config* path.
 
@@ -28,7 +28,7 @@ You have to subscribe to the APIs used in the Application and get your own API k
 
 - [Weather Underground Forecast API](https://www.wunderground.com/weather/api/d/docs?MR=1)
 
-#### **Additional notes**:
+#### Additional notes:
 
 Make sure your Internet/Proxy/Firewall settings allow you to access the APIs. If you are always redirected to `404` page, then you have to look into your Internet/Proxy/Firewall settings.
 
@@ -36,7 +36,6 @@ Make sure your Internet/Proxy/Firewall settings allow you to access the APIs. If
 
 Arvind Raman | [arvind.raman@tcs.com](mailto:arvind.raman@tcs.com)
 
-Sai Siva Madithati |  [siva.madithati@tcs.com](mailto:siva.madithati@tcs.com)
 
 
 
