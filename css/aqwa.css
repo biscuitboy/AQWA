@@ -1,0 +1,289 @@
+/* app css stylesheet */
+body {
+    background-color: #0a2f42;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+table {
+    color: #fff;
+}
+
+.home {
+    margin-top: 100px;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.large-font {
+    font-size: xx-large;
+}
+
+.circle-base {
+    border-radius: 65px;
+}
+
+.air-btn {
+    color: #fff;
+    font-size: 40px;
+    width: 125px;
+    height: 125px;
+    border: 2px solid #FFF;
+    padding-top: 40px;
+    padding-left: 40px;
+    position: absolute;
+    left: 45%;
+    cursor: pointer;
+    -webkit-transition: width 1.5s;
+	-moz-transition: width 1.5s;
+    -ms-transition: width 1.5s;
+    transition: width 1.5s;
+}
+
+.air-btn-text {
+    color: transparent;
+    -webkit-transition: color .5s ease;
+	-moz-transition: color .5s ease;
+    -ms-transition: color .5s ease;
+    transition: color .5s ease;
+    margin-bottom: 10px;
+}
+
+.air-btn:hover > .air-btn-text {
+    color: #fff;
+    -webkit-transition: color 1.5s .5s ease;
+	-moz-transition: color 1.5s .5s ease;
+	-ms-transition: color 1.5s .5s ease;
+	transition: color 1.5s .5s ease; 	
+}
+
+.air-btn:hover {
+    width: 425px;
+}
+
+.wthr-btn {
+    color: #FFF;
+    font-size: 40px;
+    width: 125px;
+    height: 125px;
+    border: 2px solid #FFF;
+    padding-top: 40px;
+    padding-right: 40px;
+    margin-top: 50px;
+    position: absolute;
+    left: 615px;
+    top: 330px;
+    cursor: pointer;
+    -webkit-transition: left 1.5s,width 1.5s;
+	-moz-transition:  left 1.5s,width 1.5s;
+	-ms-transition:  left 1.5s,width 1.5s;
+	transition:  left 1.5s,width 1.5s;
+}
+
+.wthr-btn-text {
+    color: transparent;
+    -webkit-transition: color .5s ease;
+	-moz-transition: color .5s ease;
+	-ms-transition: color .5s ease;
+	transition: color .5s ease;
+    margin-bottom: 10px;
+}
+
+.wthr-btn:hover > .wthr-btn-text {
+    color: #fff;
+    -webkit-transition: color 1.5s .5s ease;
+	-moz-transition:  color 1.5s .5s ease;
+	-ms-transition:  color 1.5s .5s ease;
+	transition:  color 1.5s .5s ease;
+}
+
+.wthr-btn:hover {
+    width: 615px;
+    left: 125px;
+}
+
+.icon-text {
+    bottom: 10px;
+    position: relative;
+}
+
+.location-label {
+    color: #fff;
+}
+
+.map-label {
+    color: #fff;
+}
+
+.map-image {
+    cursor: pointer;
+}
+
+.map-div {
+    margin-top: 30px;
+    padding: 20px;
+    height: auto;
+}
+
+.map-div-error {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.bold-text {
+    font-weight: 700;
+}
+
+.airqa-main {
+    color: #fff;
+}
+
+.panel {
+    background-color: #0a2f42;
+}
+
+.cause-effects {
+    color: #FFF;
+}
+
+.search-button {
+    background-color: #eee;
+}
+
+.form-error {
+    margin-top: 10px;
+    display: block;
+    color: red;
+    font-size: 16px;
+}
+
+.fa-spinner {
+    color: #fff;
+}
+
+.loader-icon {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+}
+
+.curent-temp {
+    margin-top: 50px;
+    color: #fff;
+}
+
+.wi-custom-font {
+    font-size: 100px;
+}
+
+.humid-value {
+    font-size: 45px;
+}
+
+.margin-top-15 {
+    margin-top: 15px;
+}
+
+.padding-bottom-25 {
+    padding-bottom: 25px;
+}
+
+.app-name {
+    padding-top: 7px;
+    font-size: medium;
+    font-weight: lighter;
+}
+
+.thermo {
+    margin: 20px 0 10px 90px;
+}
+
+.degf {
+    font-size: 34px;
+	display: block;
+}
+
+.degc {
+    font-size: 30px;
+	display: block;
+}
+
+.temp-scale {
+    padding: 40px 0 0 35px;
+}
+
+.navbar-icons {
+    margin-top: 5px;
+    text-align: center;
+}
+.navbar-icons a {
+    text-decoration: none;
+}
+
+.navbar-brand {
+    padding: 21px 15px;
+}
+
+.powered-by {
+    color: #777;
+    font-size: 16px;
+    font-weight: 700;
+}
+.server-error{
+	 color: white;
+	 border-radius : 15px;
+	 height: 100px;
+	 margin-top : 50px;
+	}
+.server-error-icon{
+	text-align:center;
+}
+.server-error-font{
+	color: yellow;
+	font-size: 250px;
+}
+.error-aqua{
+	color: aqua;
+}
+.error-red{
+	color: red;
+}
+
+.static-maps:hover{
+	box-shadow: 0px 0px 100px #f8f8f8;
+    z-index: 2;
+}
+/*OWL Carousel*/
+.owl-theme .owl-controls .owl-buttons div {
+    padding: 5px 9px;
+}
+
+.day {
+    color: #0a2f42;
+    background-color: #fff;
+    font-size: larger;
+    font-weight: 700;
+    border-radius: 20px;
+    margin: 0 10px 0 0;
+    padding: 2px 15px;
+}
+
+.owl-theme .owl-buttons i {
+    margin-top: 2px;
+}
+
+.owl-theme .owl-controls .owl-buttons div {
+    position: absolute;
+    background: #869791;
+}
+
+.owl-theme .owl-controls .owl-buttons .owl-prev {
+    left: -45px;
+    top: 95px;
+}
+
+.owl-theme .owl-controls .owl-buttons .owl-next {
+    right: -45px;
+    top: 95px;
+}

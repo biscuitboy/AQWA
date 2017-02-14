@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="climateApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="climateApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="climateApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="climateApp" class="no-js" ng-cloak> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AQWA - Air Quality & Weather Application</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- include external CSS -->	
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link href="css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Weather Icons CSS -->
+  <link href="css/weather-icons/css/weather-icons.min.css" rel="stylesheet" type="text/css">
+  <!-- OWL Carousel CSS -->
+  <link href="css/owl.carousel.min.css" rel="stylesheet">
+  <link href="css/owl.theme.min.css" rel="stylesheet">
+  <link href="css/owl.transitions.min.css" rel="stylesheet">
+  <link href="favicon-sun-o.ico" rel="shortcut icon" type="image/x-icon">
+  <!-- Application CSS-->
+  <link href="css/aqwa.css" rel="stylesheet">
+</head>
+<body>
+<!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+  
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+		 <a class="navbar-brand large-font" href="#/"><i class="wi wi-day-cloudy-gusts"></i>  AQWA</a>	
+		 <p class="navbar-text app-name">Air Quality and Weather Application</p>
+		</div>
+		<div class="nav navbar-nav navbar-right navbar-icons ">
+		<span class="powered-by">Powered by</span>
+		<a href='https://developers.google.com/maps/documentation/geocoding/' target='_blank'>
+			<img height="60" width="60" src="images/icon_geocoding.svg" alt="Google Geocoding API" title="Google Geocoding API"></img>
+		</a>
+		<a href='https://developers.google.com/maps/documentation/static-maps/' target='_blank'>
+			<img height="60" width="60" src="images/icon_staticmapsapi.svg" alt="Google Static Maps API" title="Google Static Maps API"></img>
+		</a>
+		<a href='https://breezometer.com/api/' target='_blank'>
+			<img height="45" width="60" src="images/breezometer_logo.svg" alt="BreezoMeter Air Quality API" title="BreezoMeter Air Quality API"></img>
+		</a>
+		<a href='https://www.wunderground.com/weather/api/d/docs?MR=1' target='_blank'> 
+			<img height="40" width="150" src="images/wunderground_logo.png" alt="Weather Underground API" title="Weather Underground API"></img>
+		</a>
+		</div>
+	 </div>
+	</nav> 
+	<div class="container"> <!--main .container-->
+		<div ng-view></div> <!-- all ng-templates get loaded into this div -->
+		<span ng-if="showLoader" class="loader-icon"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></span>	
+
+		<script type="text/ng-template" id="home.html"> <!-- home template START -->
+			<section class="home" ng-controller="climateAppCtrl"> 
+				<div class="">
+					<div class="circle-base text-center air-btn" ng-click="airQuality()"><i class="fa fa-industry pull-left" title="Air Quality"></i><div class="air-btn-text"><span class="icon-text">Air Quality</span></div>  </div>
+					<div class="circle-base text-center wthr-btn" ng-click="weatherForecast()"> <i class="fa fa-cloud pull-right" title="Weather"></i> <div class="wthr-btn-text"><span class="icon-text">Weather Forecast</span></div> </div>
+				</div>
+			</section>
+		</script> <!-- home template END -->
+
+		<script type="text/ng-template" id="airQuality.html"> <!-- Air Quality template START -->
+			<div class="container"  ng-controller="climateAppCtrl"> 
+				 <div class="row">
+					 <h3 class="location-label">Enter location to check air quality</h3>
+					<form name="searchLocationForm" novalidate> 
+						<div class="input-group">
+							  <span class="input-group-addon" id="basic-addon1"> <i class="fa fa-map-marker" title="Weather"></i></span>
+							  <input type="text" ng-model="location" name="location" ng-keypress="submitOnEnter($event, 1)" class="form-control input-lg" placeholder="California, USA" aria-describedby="basic-addon1" required>
+							   <span class="input-group-btn">
+									<button ng-click="getLocation()" class="btn btn-default btn-lg search-button" ng-disabled="searchLocationForm.location.$invalid" type="button"><i class="fa fa-search" title="Go!"></i></button>
+								</span>
+						</div>
+						<div class="col-xs-12 alert alert-danger form-error" ng-show="searchLocationForm.location.$touched && searchLocationForm.location.$invalid">
+							<span><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Location is required!</span>
+						</div>
+					</form>
+					  <div class="panel panel-primary map-div margin-bottom" ng-if="showStaticMap">
+						<span class="map-image">
+						<p class="map-label"> Click on the Map below to get the Air Quality of <span class="bold-text">{{staticLocation}}</span></p>
+						<img class="img-circle static-maps" ng-src="{{resolvedMapUrl}}" alt="Maps" ng-click="airQualityDelivered || getAirQuality()" ng-disabled="airQualityDelivered"></img>
+						</span>
+						<span class="col-xs-6 airqa-main pull-right" ng-if="showAirQuality">
+							<h2>Air Quality for {{currentLocation}}: <em>{{airQa.breezometer_aqi}}</em></h2>
+							<div id="preview">
+							   <canvas gauge-js options="gaugeOptions" ng-model="airQa.breezometer_aqi"></canvas>
+							 </div>
+							<h3> indicates <u>{{airQa.breezometer_description}}</u> !</h3>
+							<a href="javascript:void(0)" ng-if="!showAllAirQADetails" ng-click="showAllDetails()" scroll-on-click>Show Me More</a>
+							<a href="javascript:void(0)" ng-if="showAllAirQADetails" ng-click="showAllDetails()">Hide Details</a>
+						</span>
+						<span class="col-xs-6 airqa-main pull-right" ng-if="airQualityError">
+							<h3> Sorry! {{airQualityErrorMsg}}</h3>
+							<h5> Please try a different location. See <a href="https://breezometer.com/air-quality-api/overview/" target="_blank">supported countries</a> for details. </h5>
+						</span>
+					  </div>
+					  <div class="alert alert-danger map-div-error" ng-if="geoCodeError">
+							<span><i class="fa fa-exclamation-triangle"></i> The location you entered could not be found! You may want to check for spelling mistakes or try with a different location.</span>			
+					  </div>
+					<div class="panel-group margin-bottom" id="accordion" role="tablist" aria-multiselectable="true" ng-if="showAllAirQADetails" >
+					  <div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+						  <h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							 Pollution Data
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  <div class="panel-body">
+							<ul class="cause-effects">
+								<li>{{airQa.dominant_pollutant_text.main}}</li>
+								<li>{{airQa.dominant_pollutant_text.effects}}</li>
+								<li>{{airQa.dominant_pollutant_text.causes}}</li>
+							</ul>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingTwo">
+						  <h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+							 Recommendations
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+						  <div class="panel-body">
+							<table class="table table-bordered table-condensed">
+								<thead>
+									<tr >
+										<th class="text-center">For </th>
+										<th class="text-center">Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="text-center"><i class="fa fa-2x fa-child" title="Children"></i></td>
+										<td>{{airQa.random_recommendations.children}}</td>
+									</tr>
+									<tr>
+										<td class="text-center"><i class="fa fa-2x fa-futbol-o" title="Sports"></i></td>
+										<td>{{airQa.random_recommendations.sport}}</td>
+									</tr>
+									<tr>
+										<td class="text-center"><i class="fa fa-2x fa-medkit" title="Health Sensitives"></i></td>
+										<td>{{airQa.random_recommendations.health}}</td>
+									</tr>
+									<tr>
+										<td class="text-center"><i class="fa fa-2x fa-home" title="Indoors"></i></td>
+										<td>{{airQa.random_recommendations.inside}}</td>
+									</tr>
+									<tr>
+										<td class="text-center"><i class="fa fa-2x fa-tree" title="Outdoors"></i></td>
+										<td>{{airQa.random_recommendations.outside}}</td>
+									</tr>
+								</tbody>
+							</table>
+						  </div>
+						</div>
+					  </div>
+					 </div>
+				</div> <!--row -->
+			</div> <!--class="container"-->
+		</script> <!-- Air Quality template END -->
+		<script type="text/ng-template" id="weather.html"> <!-- Weather template START -->
+				<div class="container"  ng-controller="climateAppCtrl"> 
+				 <div class="row">
+					 <h3 class="location-label padding-bottom-25">Get Weather details for...</h3>
+					<form name="searchWthrLocationForm" novalidate> 
+						<div class="input-group">
+							  <span class="input-group-addon" id="basic-addon1"> <i class="fa fa-map-marker" title="Weather"></i></span>
+							  <input type="text" ng-model="location" name="weatherlocation" ng-keypress="submitOnEnter($event, 2)" class="form-control input-lg" placeholder="Chennai, TamilNadu" aria-describedby="basic-addon1" required>
+							   <span class="input-group-btn">
+									<button ng-click="getWeatherForecast()" class="btn btn-default btn-lg search-button" ng-disabled="searchWthrLocationForm.weatherlocation.$invalid" type="button"><i class="fa fa-sun-o" title="Go!"></i></button>
+								</span>
+						</div>
+						<div class="col-xs-12 alert alert-danger form-error" ng-show="searchWthrLocationForm.weatherlocation.$touched && searchWthrLocationForm.weatherlocation.$invalid">
+							<span><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Location is required!</span>
+						</div>
+					</form>
+				</div>
+				<div class="alert alert-danger map-div-error" ng-if="geoCodeError">
+							<span><i class="fa fa-exclamation-triangle"></i> The location you entered could not be found! You may want to check for spelling mistakes or try with a different location.</span>			
+				</div>
+				<div class="row curent-temp" ng-if="showForecast"><!-- row current-temp START -->
+					<data-owl-carousel class="owl-carousel" data-options="{items:1, navigation: true, pagination: false, rewindNav : false,paginationSpeed : 5000,transitionStyle:'backSlide'}">
+					<div owl-carousel-item="" ng-repeat="item in ::arrayOfSorted" class="item">
+							<div class="col-xs-12">
+								<div class="col-xs-4">
+									<span class="wi-custom-font thermo col-xs-2"><i class="wi wi-thermometer"></i></span>
+									<div class="col-xs-4 temp-scale text-center">
+										<span class="degf">{{item.temp_c}}<i class="wi wi-celsius"></i></span>
+										<span class="degc" >{{item.temp_f}}<i class="wi wi-fahrenheit"></i></span>
+									</div>
+									<div class="col-xs-12">
+										<h3 class="margin-top-15 text-center"> Feels like: {{item.feelslike_c}}<i class="wi wi-celsius"></i> / {{item.feelslike_f}}<i class="wi wi-fahrenheit"></i>
+										</h3>
+									</div>
+								</div>
+								<div class="col-xs-4 text-center">
+									<h1 class="wi-custom-font"><i class="{{iconMap[item.icon]}}"></i></h1>
+									<h1 class="text-center">{{item.weather}}</h1>
+									<span><span class="day">{{item.day}}</span> </span>
+									<span>{{item.full_name}}, {{item.country}}</span>
+								</div> 
+								<div class="col-xs-4 text-center">
+									<span class="wi-custom-font"><i class="wi wi-humidity" title="Relative Humidity"></i> </span><span class="humid-value">{{item.relative_humidity}}</span> 
+									<h3>Wind Speed : {{item.wind_kph}} kmph</h3>
+									<h5>({{item.wind_mph}} mph)</h5>
+								</div>
+							</div>
+						</div> <!-- row current-temp END -->
+					</data-owl-carousel>	
+					</div>	
+			</div>
+		</script>  <!-- Weather template END -->
+		<script type="text/ng-template" id="404.html"> <!--404 template start -->
+			<div class="container"  ng-controller="climateAppCtrl"> 
+				<div class="col-xs-12">
+						<h1 class="server-error">Oops! Looks like we're <abbr title="A server error occured.">under the weather</abbr>. Please try again later.</h1>
+				</div>
+				<div class="col-xs-12">
+						<div class="col-xs-4 server-error-icon"><i class="wi wi-meteor server-error-font" title="OMG! A meteor!!"></i></div>
+						<div class="col-xs-4 server-error-icon"><i class="wi wi-volcano server-error-font error-red" title="Oh no! An erupting volcano!"></i></div>
+						<div class="col-xs-4 server-error-icon"><i class="wi wi-tsunami server-error-font error-aqua" title="Not a tsunami again!"></i></div>
+				</div>
+			</div>
+		</script> <!--404 template end -->
+	</div> <!--main ./container-->
+  
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>-->
+  
+  <!-- Include JS librarires -->
+  <script src="js/vendor/angular/angular.min.js"></script>
+  <script src="js/vendor/angular/angular-route.min.js"></script>
+  <script src="js/vendor/jquery/jquery.js"></script>
+  <script src="js/vendor/twbs-bootstrap/bootstrap.min.js"></script>
+  <script src="js/vendor/gauge/gauge.js"></script>
+  <script src="js/vendor/owl-carousel/owl.carousel.min.js"></script>
+  
+  <!-- include application scripts -->
+  <script src="js/dist/climate-app/app.js"></script>
+  
+  <!--Directives -->
+  <script src="js/dist/climate-app/directives/gauge.js"></script>
+  <script src="js/dist/climate-app/directives/autoScroll.js"></script>
+  <script src="js/dist/climate-app/directives/owlCarousel.js"></script>
+  <script src="js/dist/climate-app/directives/owlCarouselItem.js"></script>
+  
+  <!--Controllers -->
+  <script src="js/dist/climate-app/controllers/climateAppCtrl.js"></script>
+  
+  <!--Config -->
+  <script src="js/dist/climate-app/config/routing.js"></script>
+  <script src="js/dist/climate-app/config/settings.js"></script>
+  
+</body>
+</html>
