@@ -31,9 +31,6 @@ You have to subscribe to the APIs used in the Application and get your own API k
 
 Make sure your Internet/Proxy/Firewall settings allow you to access the APIs. If you are always redirected to `404` page, then you have to look into your Internet/Proxy/Firewall settings.
 
-## Contact
-
-Arvind Raman | [arvind.raman@tcs.com](mailto:arvind.raman@tcs.com)
 
 
 
