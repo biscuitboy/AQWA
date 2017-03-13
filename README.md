@@ -31,7 +31,7 @@ You have to subscribe to the APIs used in the Application and get your own API k
 
 Make sure your Internet/Proxy/Firewall settings allow you to access the APIs. If you are always redirected to `404` page, then you have to look into your Internet/Proxy/Firewall settings.
 
-
+*Note:* The project is published at https://biscuitboy.github.io/aqwa/. Note that it is not fully functional since API tokens have not been made available.
 
 
 
